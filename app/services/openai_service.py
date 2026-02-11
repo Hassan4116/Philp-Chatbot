@@ -7,13 +7,14 @@ from app.services.prompts import get_prompt
 client = OpenAI(base_url="https://api.groq.com/openai/v1",api_key=OPENAI_API_KEY)
 
 
-def get_philp_reply(message: str, session_id: str, mode: str) -> str:
+def get_philp_reply(message: str, session_id: str, mode: str, language: str) -> str:
     try:
         save_message(session_id, "user", message)
 
         history = get_history(session_id)
 
         system_prompt = get_prompt(mode)
+        system_prompt = system_prompt.replace("{language}", language)
 
         messages = [{"role": "system", "content": system_prompt}]
         messages += history
